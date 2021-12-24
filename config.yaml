@@ -1,0 +1,11 @@
+websitename: WebSiteName
+MAIL_DEFAULT_SENDER: webemail.yan@gmail.com
+email_expiration: 3600
+SQLALCHEMY_DATABASE_URI: default
+postsPerPage: 9
+contactEmail: webemail.yan@gmail.com
+prohibited_words:
+  - cunt
+  - fucker
+  - slut
+  - whore

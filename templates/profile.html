@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Profile of {{ user.username }}{% endblock %}
+{% block content %}
+
+<div class="center">
+  <div class="card">
+  <img src="{{ user.profile_pic }}" alt="Avatar" class="avatar">
+		<div class="big"><strong>{% if user.role %}[<span class="red">{{ user.role }}</span>] {% endif %}{{ user.username }}</strong></div><br>
+ <i>Created {{ settings['d_b'](user.registered_on) }} ago</i></div>
+
+<div id="u-info">
+<div class="card">
+  {% set likes = settings['gul'](user.id) %}
+  <i class="fa fa-line-chart fa-fw" aria-hidden="true"></i>{{ likes }}
+  {% if likes > 1 %} 
+  upvotes
+  {% elif likes == 1 %}
+  upvote
+  {% else %}
+  upvotes
+  {% endif %}
+  <br>
+  <i class="fa fa-reply fa-fw" aria-hidden="true"></i>{{ settings['gup'](user.id) }} post(s)
+</div>
+<br>
+<div class="card">
+  <h2>About</h2>
+  <p>{{ user.about }}</p>  
+</div>
+
+{% if user.username == current_user.username %}
+<div class="card">
+  
+
+<form action="" method="post">
+  {{ form.hidden_tag() }}
+  {{ form.about.label }}
+  {{ form.about }}
+<input type="submit" value="Change">
+{% for error in form.about.errors %}<span class='error'>[{{ error }}]</span>{% endfor %}
+</form>
+
+</div>
+<br>
+
+<div class="card">
+<a href="/settings" class="">Change Settings ⚙</a>
+</div>
+
+{% endif %}
+</div>
+
+
+  <br><div class="card"><p>Threads:</p></div>
+  {% for post in posts %}
+
+  <a class='carda' href="/thread/{{ post[0].id }}">
+  <div class="card">
+    <h3>{{post[0].title}}</h3>
+    <br>
+    <i>{{ post[1] }} | {{ post[0].created_on }}</i>
+    <p>
+      {{ post[0].content|truncate(100) }}
+    </p>
+    <br>
+  </div>
+  </a>
+  <br>
+
+  {% endfor %}
+</div>
+
+
+{% endblock %}

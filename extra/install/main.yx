@@ -1,0 +1,16 @@
+ver = "2";
+sv = exec(~returne=int(requests.get('https://forum.eniac1.repl.co/ver').content)~);
+sv = to_str(sv);
+
+f = "Main branch has a new update. (extra's folder)";
+g = "You are up to date.";
+d = sv==ver;
+
+if(d) {%
+  g&
+%}
+else{%
+  f&
+%}
+
+#> might add more later;

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/static/style.css">
+	<script src="/static/scripts.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.4/purify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/party-js@latest/bundle/party.min.js"></script>
+
+<!-- SEO/SE -->
+<meta name="identifier-url" content="{{ request.path }}" />
+<meta name="title" content="{{ settings['websitename'] }}" />
+<meta name="description" content="A simple open-source forum" />
+<meta name="abstract" content="A simple open-source forum" />
+<meta name="keywords" content="forum, open-source, replit, eniac1, yanI42" />
+<meta name="author" content="ENIAC1" />
+<meta name="revisit-after" content="15" />
+<meta name="language" content="EN" />
+<meta name="copyright" content="© 2021 WSN-Forum" />
+<meta name="robots" content="All" />
+<!-- SEO/SE end -->
+</head>
+{% block head %}{% endblock %}
+<div id="loader"></div>
+
+<body class='anim'>
+	<title>{% block title %}{{ settings["websitename"] }}{% endblock %} </title>
+  {% block navbar %}
+	<div class="navbar navbar-fixed-top">
+    <ul>
+    <li><a href="/" class='webname'><strong>{{ settings["websitename"] }}</strong></a></li>
+		{% if current_user.is_authenticated %}
+    <li class='right'><a href="/logout">Logout</a></li>
+    <li class='right'><a href="/home">Home</a></li>
+		<li class='right'><a href="/profile/{{ current_user.username }}">Profile</a></li>
+    <li class="right"><a href="/shop">{{ settings['hf'](current_user.coins) }} <i class="fa ic">&#xf0d6;</i></a></li>
+    {% else %}
+    <li class='right'><a href="/login">Login</a></li>
+		<li class='right'><a href="/reg">Register</a></li>
+    {% endif %}
+    </ul>
+	</div>
+	<hr> {% endblock %}
+  <br>
+  <div class='clearfix'>
+  <div class="column center" style="display: none;">
+    <div class="card-l"><strong>Log:</strong></div>
+    {% with messages = get_flashed_messages() %} {% if messages %}
+		<div class="card-l">
+			{% for message in messages %}
+			<p>{{ message }}</p>
+			{% endfor %}
+		</div>
+		{% endif %} {% endwith %}
+    {% if not get_flashed_messages() %} <div class="card-l">∅</div> {% endif %}
+    <br>
+    </div>
+	
+  <div class="column mc">
+		{% block content %} {% endblock %}
+	</div>
+  <br>
+  </div>
+  <div id="modial" class="modial">
+    <div class='d clearfix'>
+      <span class='close' id='close' onclick='closeMod()'>&times;</span>
+      <h1 class='holiday-h'>Very Cool. (Literally! Brrr...)</h1>
+      <p id='c-mod'>Happy Holidays! 🎉</p>
+      <p class='sig'>- @ENIAC1/yanI42</p>
+      <img src="https://clipartix.com/wp-content/uploads/2019/03/hot-chocolate-clipart-2-2019-16.png" alt="Hot Chocolate" class='imge'>
+      <!--<img src="/static/imgs/tree.svg" alt="Christmas Tree" class='bol'> disabled due to looking horrible-->
+    </div>
+  </div>
+
+  <footer class="footer_cr">
+  <p class='center inline'><a href="mailto:{{settings['contactEmail']}}"><img src="/static/imgs/bug_art.png" alt="" class="ico"> Report a bug?</a></p>
+  <p class="center inline"><a href="/privacy"><img src="/static/imgs/qmark_art.png" alt="" class='ico'> Privacy Policy</a></p>
+  <p>&copy; Copyright 2021 {{ settings['websitename'] }}-Forum 🎄</p></footer>
+<div id="sb">SnackBar Content</div>
+</body>
+</html>

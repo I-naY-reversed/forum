@@ -1,0 +1,43 @@
+{% extends "base.html" %} {% block title %}Index{% endblock %} {% block content %}
+
+<div class="card">
+	<div class="center">
+		<h2>Index</h2>
+		<p>This is the index of this forum. </p><br>
+      <p>Most actions on this site require you to be logged in; register <a href="/reg">here</a> or log in <a href="/login">here</a>.</p><br>
+      <p>To create a thread go to <a href="/cpost">Thread Creation</a>, alternatively to see posts go to <a href="/home">Home/Feed</a>. Your profile resides <a href="/profile/{{ current_user.username }}">here</a>.  (Creation of threads and usage of some of their features require you to be logged in)</p><br>
+
+      <p>- <a href="/profile/yanI42">yanI42</a> / @<a href="https://replit.com/@ENIAC1">ENIAC1</a></p>
+      <p><button class="uselect tbutton" nonce="{{ csp_nonce() }}" id='partybtn'>👏</button></p>
+  </div>
+</div>
+<br>
+
+<div class="card">
+  <div class="center">
+    <h2>New features</h2>
+    <ul>
+      <li>Newlines automatically added in post creation</li>
+      <li>Profile Pictures/Avatars</li>
+      <li>Delete Post Button</li>
+      <li>Delete Account Button (Still extremly buggy)</li>
+      <li>Google reg and login</li>
+      <li>Security Headers</li>
+      <li>Some degree of anti-dos (max 30 reqs per second)</li>
+      <li>Some css changes</li>
+      <li>Using <a href="https://github.com/Pylons/waitress">waitress</a> to run site</li>
+      <li>Added privacy policy</li>
+      <li>Started using gzip</li>
+      <li><i>Unfortunately the sites database had corrupted due to a mistake and needed to be reset</i></li>
+      <li>Added post editing</li>
+      <li>Added post ratings</li>
+      <li>Profiles updated to show like count and post count</li>
+      <li>Dynamic Scrolling in <a href="/threads">Feed</a></li>
+      <li>Small Optimizations</li>
+      <li>Post Sorting (Hot)</li>
+      <li>Small bug fixes</li>
+    </ul>
+  </div>
+</div>
+
+{% endblock %}

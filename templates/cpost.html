@@ -1,0 +1,19 @@
+{% extends "base.html" %} 
+{% block title %}Create thread{% endblock %}
+{% block content %}
+
+<div class="card">
+<form action="" method="post" novalidate>
+	{{ form.hidden_tag() }}
+
+	{{ form.title.label }}<br>
+  {{ form.title(size=100) }}
+  <br>
+  {{ form.content.label }}<br>
+  {{ form.content(size=100) }}
+  <br>
+<input type="submit" value="Create Post">
+</form>
+</div>
+
+{% endblock %}

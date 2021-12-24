@@ -1,0 +1,102 @@
+{% extends "base.html" %} 
+{% block title %}Thread - "{{post.title}}"{% endblock %}
+{% block head %}<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/static/thread.css">
+<meta http-equiv="refresh" content="40000"><!-- auto refresh every 11 hours idk -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" defer></script>
+<script>
+  window.MathJax = {
+    startup: {
+         typeset: false
+     },
+    options: {
+    renderActions: {
+      addMenu: []
+    },
+    CommonHTML: { linebreaks: { automatic: true } },
+   "HTML-CSS": { linebreaks: { automatic: true } },
+    SVG: { linebreaks: { automatic: true }
+}   
+  }
+ };
+</script>
+{% endblock %}
+{% block content %} 
+<div onload="init()">
+  
+<div class="card" id="pst_data">
+  <h3>{{post.title}}</h3>
+  <br>
+  <i><a href="/profile/{{ auth }}">{{ auth }}</a></i>
+  <br><p>Created {{ settings['d_b'](post.created_on) }} ago</p>
+  <hr>
+  <p>
+    <div class="content"><p class='lhn'>{{ post.content }}</p></div>
+    </p>
+  <br>
+  {% if current_user.is_authenticated %}
+    {% if current_user.has_liked_post(post) %}
+    {{ settings['hf'](post.likes()) }}<a href="/vote/{{ post.id }}"><i class="fa fa-chevron-up fa-fw blue"></i></a>
+    {% else %}
+    {{ settings['hf'](post.likes()) }}<a href="/vote/{{ post.id }}"><i class="fa fa-chevron-up fa-fw"></i></a>
+    {% endif %}
+  {% else %}
+  {{ settings['hf'](post.likes()) }}<a href="/vote/{{ post.id }}"><i class="fa fa-chevron-up fa-fw"></i></a>
+  {% endif %}
+  
+  <div style="float: right">
+  {% if auth == current_user.username %}
+  <a href="/thread/{{pid}}/del" title="Delete Post"><i class="fa fa-trash fa-fw"></i></a>
+  <button onclick="document.getElementById('pst_edit').style.display='block'; document.getElementById('pst_data').style.display='none'" class="ibutton"><i class="fa fa-pencil fa-fw" title="Edit Post"></i></button>
+  {% endif %}
+  </div>
+
+</div>
+
+{% if auth == current_user.username %}
+<div class="card" id="pst_edit">
+  <button onclick="document.getElementById('pst_data').style.display='block'; document.getElementById('pst_edit').style.display='none'" class="ibutton" style="float:right"><i class="fa fa-times-circle fa-fw" title="Undo Edits"></i></button>
+  <h2>Edit Post</h2>
+<form action="" method="post">
+  {{ forme.hidden_tag() }}
+  {{ forme.title_e.label }}
+  {{ forme.title_e }}
+  {{ forme.content_e.label }}
+  {{ forme.content_e }}
+<input type="submit" value="Save">
+</form>
+</div>
+{% endif %}
+<br>
+<hr>
+
+<div class="comments">
+  {% for comment in comments %}
+  <div class="card" id='{{ comment[0].id }}'>
+    <i><a href="/profile/{{ comment[1] }}">{{ comment[1] }}</a> | {{ settings['d_b'](comment[0].created_on) }}</i> <p onclick="replyTo('/thread/{{ post.id }}#{{ comment[0].id }}', '{{ comment[0].content|truncate(40) }}')" class='rtoc'>§</a>
+    <hr>
+    <div class="content"><p>{{ comment[0].content }}</p></div>
+  </div>
+  <br>
+  {% endfor %}
+
+{% if current_user.is_authenticated %}
+  <form action="" method="post" novalidate>
+	{{ form.hidden_tag() }}
+  
+  {{ form.content(size=100) }}
+  <br>
+  <input type="submit" value="Comment">
+  {% for error in form.content.errors %}<span class='error'>[{{ error }}]</span>{% endfor %}
+  </form>
+{% endif %}
+</div>
+
+</div>
+<br><br>
+<div class="footer" id='footer'>
+<p class='inline'>Remember to not trust any suspicious code or advice posted in threads. Report any suspicious user via -> <a href="mailto:{{settings['contactEmail']}}">Report</a></p>
+</div>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+/><script src="/static/thread.js" defer></script>{% endblock %} {% block content %}
+
+<div class="card">
+	<h2>Would you like to create a thread?</h2><a href="/cpost" class='candy-cane'>Create Post</a>
+</div><br>
+
+{% for post in posts %}
+
+<a class='carda' href="/thread/{{ post[0].id }}">
+<div class="card animate__animated animate__jackInTheBox">
+  <h3>{{post[0].title}} <span class='bdg'>HOT!</span></h3>
+  <br>
+  <i><a href="/profile/{{ post[1] }}">{{ post[1] }}</a> | {{ settings['d_b'](post[0].created_on) }} ago</i>
+  <p>
+    {{ post[0].content|truncate(100) }}
+  </p><br><hr>
+  <p>
+    {{post[0].comments}} comments <i style="font-size:24px" class="fa">&#xf0e6;</i>
+  </p>
+  <br>
+</div>
+</a>
+<br>
+
+{% endfor %}
+
+<div id="dynload"></div>
+
+
+<template id="post_temp">
+<div class="card animate__animated animate__jackInTheBox">
+  <a class='carda' id="t_carda"><h3 id="t_title"></h3></a>
+  <br>
+  <i><a id="t_user"></a><p id="t_ago"></p></i>
+  <p id="t_content">
+  </p><br><hr>
+  <p>
+    <p id="t_coms" style="display: inline;"></p><i style="font-size:24px" class="fa">&#xf0e6;</i>
+  </p>
+  <br>
+</div>
+<br>
+</template>
+
+<div id="loadmore"></div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %} 
+{% block title %}Login{% endblock %}
+{% block head %}<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">{% endblock %}
+{% block content %}
+
+<div class="card">
+<h2>Sign In</h2>
+<form action="" method="post" novalidate>
+  
+	{{ form.hidden_tag() }}
+	<p>
+		{{ form.username.label }}<br>
+    {{ form.username(size=70) }}
+    {% for error in form.username.errors %}<span class='error'>[{{ error }}]</span>{% endfor %}
+    </p>
+    <p>
+        {{ form.password.label }}<br>
+        {{ form.password(size=70) }}
+        {% for error in form.password.errors %}<span class='error'>[{{ error }}]</span>{% endfor %}
+    </p>
+    <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+    <p>{{ form.submit() }}</p>
+</form>
+<a href="/pwdrst">Forgot Your Password?</a>
+<a class="button google btn" href="/loginG"><i class="fa fa-google fa-fw"></i> Google Login</a>
+</div>
+
+{% endblock %}

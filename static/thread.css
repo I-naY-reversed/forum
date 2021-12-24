@@ -1,0 +1,16 @@
+#pst_edit {
+  display: none;
+}
+
+#pst_data {
+  display: block;
+}
+
+.aheight {
+  height: auto!important;
+}
+
+.ibutton {
+  background: transparent;
+  border: none !important;
+}​

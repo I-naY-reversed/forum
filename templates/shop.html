@@ -1,0 +1,49 @@
+{% extends "base.html" %} 
+{% block title %}Shop{% endblock %}
+{% block content %}
+
+<div class="card">
+<h2>Shop</h2>
+<p>You can use the coins you have collected to buy items in this shop.</p>
+</div>
+<br>
+
+<form action="" method="post">
+{{ form.hidden_tag() }}
+<div class="card">
+  <h3>{{ form.item1.label }} Role</h3>
+  <p>{{ form.item1.label }} Role. ({{ z[0] }})</p>
+  {{ form.item1 }}
+</div>
+<br>
+
+<div class="card">
+  <h3>{{ form.item2.label }} Role</h3>
+  <p>{{ form.item2.label }} Role. ({{ z[1] }})</p>
+  {{ form.item2 }}
+</div>
+<br>
+
+<div class="card">
+  <h3>{{ form.item3.label }} Role</h3>
+  <p>{{ form.item3.label }} Role. ({{ z[2] }})</p>
+  {{ form.item3 }}
+</div>
+<br>
+
+<div class="card">
+  <h3>{{ form.item4.label }} Role</h3>
+  <p>{{ form.item4.label }} Role. ({{ z[3] }})</p>
+  {{ form.item4 }}
+</div>
+<br>
+
+<div class="card">
+  <h3>{{ form.item5.label }} Role</h3>
+  <p>{{ form.item5.label }} Role. ({{ z[4] }})</p>
+  {{ form.item5 }}
+</div>
+<br>
+</form>
+
+{% endblock %}
