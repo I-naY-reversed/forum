@@ -151,3 +151,14 @@ db.session.commit()
 
 ```
 
+# Contributing
+
+To contribute to this project through replit:
+- Fork the project
+- Modify it as you want
+- DM me (@ENIAC1) with details of the branch (ie. URL to branch)
+
+To contribute through GitHub:
+The git can be found [Here](https://github.com/I-naY-reversed/forum)
+
+For a guide on how to contribute visit [MarcDiethelm/Contributing.md](https://github.com/ReplDepot/replit-desktop/blob/dev/.github/CONTRIBUTING.md).
