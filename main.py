@@ -1,10 +1,3 @@
-'''
-python
-from main import db
-db.create_all()
-#
-'''
-
 import os
 import pathlib
 import datetime

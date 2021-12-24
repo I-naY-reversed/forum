@@ -28,6 +28,11 @@ body {
           flex-direction: column;
 }
 
+::selection {
+  background: #cf9700;
+  color: #e8fce7;
+}
+
 p {
   font-size: 15px;
 }
@@ -133,6 +138,10 @@ ul {
 
 .webname {
   font-size: 17px;
+}
+
+.webname strong {
+  font-family: 'Quicksand', sans-serif;
 }
 
 .footer {
@@ -609,4 +618,11 @@ input[type=submit]:hover {
 
 input[type=submit]:active {
   mix-blend-mode: exclusion;
+}
+
+br {
+  -webkit-user-select: none;  
+  -moz-user-select: none;    
+  -ms-user-select: none;      
+  user-select: none;
 }

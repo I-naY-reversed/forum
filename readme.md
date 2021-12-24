@@ -1,3 +1,4 @@
+This program is hosted at https://forum.eniac1.repl.co.
 
 # Forking
 
@@ -162,3 +163,6 @@ To contribute through GitHub:
 The git can be found [Here](https://github.com/I-naY-reversed/forum)
 
 For a guide on how to contribute visit [MarcDiethelm/Contributing.md](https://github.com/ReplDepot/replit-desktop/blob/dev/.github/CONTRIBUTING.md).
+
+### footnote
+**Don't share your db!**

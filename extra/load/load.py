@@ -24,6 +24,7 @@ class Loader:
     self.i += 1
     if self.i >= 4:
       self.i = 0
+    cls()
     print(msg)
     for x in range(self.i):
       print('.', end='')
