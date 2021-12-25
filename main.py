@@ -48,7 +48,7 @@ except:
     pass
 
 yt.log("Checking for updates")
-import extra.install.update
+import extra.install.update # igonre error
 
 yt.log("Importing libs...")
 from flask import Flask, render_template, redirect, flash, url_for, request, send_from_directory, abort, make_response, jsonify
@@ -192,7 +192,7 @@ app = Flask(__name__)
 
 ### config
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + str(
-    pathlib.Path(__file__).parent.resolve()) + '/login.db'  # db location
+    pathlib.Path(__file__).parent.resolve().parent.absolute()) + '/login.db'  # db location
 if settings['SQLALCHEMY_DATABASE_URI'] != 'default':
     app.config['SQLALCHEMY_DATABASE_URI'] = settings['SQLALCHEMY_DATABASE_URI']
     yt.log('Not default')

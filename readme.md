@@ -165,5 +165,13 @@ The git can be found [Here](https://github.com/I-naY-reversed/forum)
 
 For a guide on how to contribute visit [MarcDiethelm/Contributing.md](https://github.com/ReplDepot/replit-desktop/blob/dev/.github/CONTRIBUTING.md).
 
+# File details
+main / templates -> html templates for flask <br>
+main / extras.y -> package install (mainly for replit) <br>
+main / config.yaml -> config file <br>
+main / main.py -> main file running flask <br>
+main / static -> static files <br>
+main / extra -> extra dirs (not essential for program) <br>
+
 ### footnote
 **Don't share your db!**
