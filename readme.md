@@ -119,6 +119,7 @@ or in python write
 ```
 
 from main import db # note main is refering to main.py, can differ
+db.create_all()
 
 ```
 

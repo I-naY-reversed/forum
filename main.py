@@ -648,9 +648,6 @@ def login():
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember_me.data)
                 return redirect(url_for('index'))
-            elif user.password == form.password.data:
-                login_user(user, remember=form.remember_me.data)
-                return redirect(url_for('index'))
             else:
                 flash("Invalid Credentials")
                 return redirect(url_for('login'))
@@ -739,7 +736,7 @@ def loginGcb():
                 if name == None: abort(500)
             newUser = User(username=name,
                            email=email,
-                           password=cRandPwd(),
+                           password=generate_password_hash(cRandPwd(), method='sha256'),
                            registered_on=datetime.datetime.utcnow(),
                            confirmed=True)
             db.session.add(newUser)
