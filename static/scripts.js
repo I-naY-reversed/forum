@@ -135,3 +135,11 @@ function getCookie(cname) {
   }
   return "";
 }
+
+function edit(){
+  document.getElementById('pst_edit').style.display='block'; document.getElementById('pst_data').style.display='none';
+}
+
+function cedit(){
+  document.getElementById('pst_data').style.display='block'; document.getElementById('pst_edit').style.display='none'
+}

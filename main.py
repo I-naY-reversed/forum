@@ -192,7 +192,7 @@ app = Flask(__name__)
 
 ### config
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + str(
-    pathlib.Path(__file__).parent.resolve().parent.absolute()) + '/login.db'  # db location
+    pathlib.Path(__file__).parent.resolve()) + '/login.db'  # db location [str(pathlib.Path(__file__).parent.resolve().parent.absolute())]
 if settings['SQLALCHEMY_DATABASE_URI'] != 'default':
     app.config['SQLALCHEMY_DATABASE_URI'] = settings['SQLALCHEMY_DATABASE_URI']
     yt.log('Not default')
@@ -665,7 +665,7 @@ def confirmReset(token):
 
     user = User.query.filter_by(email=email).first_or_404()
     pwd = cRandPwd()
-    user.password = pwd
+    user.password = generate_password_hash(pwd, method='sha256')
     if user:
         return f"Your password has been set to {pwd}."
 
@@ -835,7 +835,7 @@ def thread(thread):
     pst = Post.query.filter_by(id=thread).first()
     if pst == None:
         return render_template('404.html'), 404
-    auth = User.query.filter_by(id=pst.author_id).first().username
+    auth = User.query.filter_by(id=pst.author_id).first()
 
     form = CommentForm()
     if form.validate_on_submit():

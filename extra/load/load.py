@@ -6,7 +6,7 @@ def cls():
 
 class Loader:
   def __init__(self):
-    self.first = False
+    self.first = True
     self.i = 0
     self.state = "initializing loader..."
     self.on = False
