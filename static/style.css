@@ -484,6 +484,7 @@ hr {
   white-space: nowrap;
   vertical-align: baseline;
   float: right;
+  font-size: 15px;
 }
 
 @media screen and (max-width: 600px) {
@@ -607,9 +608,9 @@ hr {
 }
 
 input[type=submit] {
-    background: #3f3f3f;
-    color: #f1f1f1;
-    box-shadow: inset 0px 0px 2px 1px #212121cc;
+    background: #e1e1e1;
+    color: #121212;
+    box-shadow: inset 0px 0px 2px 1px #d9d9d9cc;
     font-weight: 600;
     transition-duration: 0.15s;
     transition-timing-function: cubic-bezier(0.12, 0.07, 0.31, 1.08);
@@ -644,6 +645,7 @@ br {
   border: 2.5px #ccc;
   border-style: solid;
   font-size: 13px;
+  text-align: center;
 }
 
 .content p {
@@ -662,4 +664,33 @@ br {
   display: block;
   margin: 0 auto;
   float: none;
+}
+
+#query {
+  visibility: hidden;
+}
+
+.flex {
+  display: flex;
+}
+
+input[type=text] {
+  border-radius: unset;
+  border-width: 1px;
+}
+
+.hchoc {
+  content: url("/static/imgs/hot-chocolate-clipart-2-2019-16.png"); 
+  /* fallback incase other url is blocked */
+  content: url("https://clipartix.com/wp-content/uploads/2019/03/hot-chocolate-clipart-2-2019-16.png");
+}
+
+.ml > * {
+  margin-right: 0.25em;
+}
+
+.buttonTb {
+  background: transparent;
+  border: none !important;
+  cursor: pointer;
 }

@@ -21,6 +21,7 @@
   }
  };
 </script>
+<script src="/static/report.js" defer></script>
 {% endblock %}
 {% block content %} 
 <div onload="init()">
@@ -38,13 +39,14 @@
 
   <div>
   <h3>{{post.title}}</h3>
-  <br>
-  <br><p>Created {{ settings['d_b'](post.created_on) }} ago</p>
+  <p>Created {{ settings['d_b'](post.created_on) }} ago</p>
   <hr>
+  <br>
   <p>
     <div class="content"><p class='lhn'>{{ post.content }}</p></div>
     </p>
-  <div class="fr">
+  <div class="fr ml">
+  <button class='ibutton fr' onclick="reportPost({{ pid }})" title="Report Post"><i class="fa fa-exclamation"></i></button>
   {% if current_user.is_authenticated %}
     {% if current_user.has_liked_post(post) %}
     {{ settings['hf'](post.likes()) }}<a href="/vote/{{ post.id }}"><i class="fa fa-chevron-up fa-fw blue"></i></a>
@@ -54,16 +56,18 @@
   {% else %}
   {{ settings['hf'](post.likes()) }}<a href="/vote/{{ post.id }}"><i class="fa fa-chevron-up fa-fw"></i></a>
   {% endif %}
-  
-  <div class="fr">
+
+  <div class="fr ml">
   {% if auth == current_user %}
   <a href="/thread/{{pid}}/del" title="Delete Post"><i class="fa fa-trash fa-fw"></i></a>
   <button onclick="edit()" class="ibutton"><i class="fa fa-pencil fa-fw" title="Edit Post"></i></button>
   {% endif %}
+
   </div>
   </div>
   </div>
 </div>
+
 
 {% if auth == current_user %}
 <div class="card" id="pst_edit">
@@ -77,6 +81,7 @@
   {{ forme.content_e }}
 <input type="submit" value="Save">
 </form>
+
 </div>
 {% endif %}
 <br>
@@ -106,8 +111,5 @@
 
 </div>
 <br><br>
-<div class="footer" id='footer'>
-<p class='inline'>Remember to not trust any suspicious code or advice posted in threads. Report any suspicious user via -> <a href="mailto:{{settings['contactEmail']}}">Report</a></p>
-</div>
 
 {% endblock %}

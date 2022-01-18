@@ -1,0 +1,25 @@
+{% extends "base.html" %} {% block title %}Search - {{ term }}{% endblock %} {% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+/><script src="/static/query.js" defer></script>{% endblock %} {% block content %}
+
+<div id="dynload"></div>
+
+
+<template id="post_temp">
+<div class="card animate__animated animate__jackInTheBox">
+  <a class='carda' id="t_carda"><h3 id="t_title"></h3></a>
+  <br>
+  <i><a id="t_user"></a><p id="t_ago"></p></i>
+  <p id="t_content">
+  </p><br><hr>
+  <p>
+    <p id="t_coms" style="display: inline;"></p><i style="font-size:24px" class="fa">&#xf0e6;</i>
+  </p>
+  <br>
+</div>
+<br>
+</template>
+
+<div id="loadmore"></div>
+<div id="query">{{ term }}</div>
+{% endblock %}

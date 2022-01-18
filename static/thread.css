@@ -13,4 +13,5 @@
 .ibutton {
   background: transparent;
   border: none !important;
+  cursor: pointer;
 }​

@@ -143,3 +143,8 @@ function edit(){
 function cedit(){
   document.getElementById('pst_data').style.display='block'; document.getElementById('pst_edit').style.display='none'
 }
+
+function query(){
+  var z = document.getElementById("query_ta");
+  window.location.replace(window.location.origin + "/search/" + z.value);
+}

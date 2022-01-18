@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% block head %}<script src="/static/report.js" defer></script>{% endblock %}
 {% block title %}Profile of {{ user.username }}{% endblock %}
 {% block content %}
 
@@ -23,9 +24,10 @@
   <i class="fa fa-reply fa-fw" aria-hidden="true"></i>{{ settings['gup'](user.id) }} post(s)
 </div>
 <br>
-<div class="card">
+<div class="card clearfix">
   <h2>About</h2>
   <p>{{ user.about }}</p>  
+  {% if current_user != user %} <button class='buttonTb fr' onclick="reportUser({{ user.id }})" title="Report User"><i class="fa fa-exclamation"></i></button>{% endif %}
 </div>
 
 {% if user.username == current_user.username %}
@@ -52,6 +54,7 @@
 
 
   <br><div class="card"><p>Threads:</p></div>
+  <br>
   {% for post in posts %}
 
   <a class='carda' href="/thread/{{ post[0].id }}">

@@ -1,19 +1,13 @@
 var counter = 0;
+var query = "";
 var load_obj = document.getElementById("loadmore")
 
-var input = document.getElementById("query_ta");
-input.addEventListener("keyup", function(event) {
-  if (event.keyCode === 13) {
-   event.preventDefault();
-   document.getElementById("q_button").click();
-  }
-});
-
 function loadNext() {
-  fetch(`/loadmore?ctr=${counter}`).then((response) => {
+  query = document.getElementById("query").innerHTML;
+  fetch(`/loadmore-query?ctr=${counter}&q=${query}`).then((response) => {
     response.json().then((data) => {
       if (!data.length) {
-        load_obj.innerText = "Thats all of the posts so far...";
+        load_obj.innerText = "Thats all of the posts matching your query.";
         return;
       }
 

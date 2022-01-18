@@ -5,6 +5,11 @@
 <div class="card">
 	<h2>Would you like to create a thread?</h2><a href="/cpost" class='candy-cane'>Create Post</a>
 </div><br>
+<div class="card flex">
+    <input type="text" placeholder="Search..." id="query_ta">
+    <button onclick="query();" id="q_button"><i class="fa fa-search"></i></button>
+</div>
+<br>
 
 {% for post in posts %}
 

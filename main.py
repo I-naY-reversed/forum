@@ -13,7 +13,8 @@ import string
 import threading
 
 import extra.load.load as load_py
-load_py.cls() # replit console bug work-around
+
+load_py.cls()  # replit console bug work-around
 import extra.ytools.ytools as yt
 
 loader = load_py.Loader()
@@ -48,9 +49,10 @@ except:
     pass
 
 yt.log("Checking for updates")
-import extra.install.update # igonre error
+import extra.install.update  # igonre error
 
 yt.log("Importing libs...")
+import extra.reports.report as reportWriter
 from flask import Flask, render_template, redirect, flash, url_for, request, send_from_directory, abort, make_response, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
@@ -159,18 +161,22 @@ class EditForm(FlaskForm):
     title_e = StringField("Title",
                           validators=[Length(min=1, max=100),
                                       InputRequired()],
-        render_kw={"placeholder": "Change Title"})
+                          render_kw={"placeholder": "Change Title"})
     content_e = StringField(
         "Content",
         validators=[Length(min=1, max=2000),
                     InputRequired()],
         widget=TextArea(),
-        render_kw={'class': 'aheight', 'placeholder': 'Change Content'})
+        render_kw={
+            'class': 'aheight',
+            'placeholder': 'Change Content'
+        })
 
 
 class SettingsForm(FlaskForm):
     profile_pic = URLField('Profile picture',
-                           validators=[Length(min=5, max=840)], render_kw={"placeholder": "Profile Picture URL"})
+                           validators=[Length(min=5, max=840)],
+                           render_kw={"placeholder": "Profile Picture URL"})
     delete = SubmitField('Delete Account')
 
 
@@ -192,7 +198,8 @@ app = Flask(__name__)
 
 ### config
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + str(
-    pathlib.Path(__file__).parent.resolve()) + '/login.db'  # db location [str(pathlib.Path(__file__).parent.resolve().parent.absolute())]
+    pathlib.Path(__file__).parent.resolve()
+) + '/login.db'  # db location [str(pathlib.Path(__file__).parent.resolve().parent.absolute())]
 if settings['SQLALCHEMY_DATABASE_URI'] != 'default':
     app.config['SQLALCHEMY_DATABASE_URI'] = settings['SQLALCHEMY_DATABASE_URI']
     yt.log('Not default')
@@ -453,7 +460,7 @@ def days_between(d1):
     mins = math.floor(secs / 60)
     hours = math.floor(mins / 60)
     days = math.floor(hours / 24)
-    months = math.floor(days / 60)
+    months = math.floor(days / 30)
     years = math.floor(months / 12)
 
     if abs(mins) < 1:
@@ -525,6 +532,13 @@ def hf(num):
 
 settings['hf'] = hf
 
+@login_required
+def reportPost(post: Post):
+    return reportWriter.write(True, post.id, current_user.id, str(datetime.datetime.utcnow()) )
+
+@login_required
+def reportUser(reportedUser: User):
+    return reportWriter.write(False, reportedUser.id, current_user.id, str(datetime.datetime.utcnow()))
 
 @lm.user_loader
 def load_user(user_id):
@@ -600,8 +614,8 @@ def cpost():
         author_id = current_user.id
         if not any(x in content.lower()
                    for x in settings['prohibited_words']) and not any(
-                       x in title.lower()
-                       for x in settings['prohibited_words']):
+                       x in title.lower() for x in settings['prohibited_words']
+                   ) and not current_user.banned:
             createPost(title, content, author_id)
             flash("Created post with title '{}'".format(title))
         return redirect(url_for('home'))
@@ -643,7 +657,11 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         flash('Attempting login for {}'.format(form.username.data))
-        user = User.query.filter_by(username=form.username.data).first()
+
+        email = User.query.filter_by(username=form.username.data).first()
+        uname = User.query.filter_by(email=form.username.data).first()
+        user = uname if not uname == None else None
+        user = email if not email == None else user
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember_me.data)
@@ -736,7 +754,8 @@ def loginGcb():
                 if name == None: abort(500)
             newUser = User(username=name,
                            email=email,
-                           password=generate_password_hash(cRandPwd(), method='sha256'),
+                           password=generate_password_hash(cRandPwd(),
+                                                           method='sha256'),
                            registered_on=datetime.datetime.utcnow(),
                            confirmed=True)
             db.session.add(newUser)
@@ -802,6 +821,11 @@ def confirm_email(token):
     return redirect(url_for('index'))
 
 
+@app.route('/search/<term>')
+def query(term):
+    return render_template('query.html', term=term.lower(), posts=[])
+
+
 @app.route('/threads')
 @app.route('/general')
 @app.route('/cont')
@@ -840,7 +864,7 @@ def thread(thread):
     form = CommentForm()
     if form.validate_on_submit():
         datae = form.content.data
-        if not any(x in datae.lower() for x in settings['prohibited_words']):
+        if not any(x in datae.lower() for x in settings['prohibited_words']) and not current_user.banned:
             addReply((form.content.data).replace('\n', '<br />'), thread,
                      current_user.id)
         return redirect(url_for('thread', thread=thread))
@@ -875,7 +899,7 @@ def delThread(thread):
 
 
 def is_url_image(image_url):
-    image_formats = ("image/png", "image/jpeg", "image/jpg")
+    image_formats = ("image/png", "image/jpeg", "image/jpg", "image/gif")
     r = requests.head(image_url)
     if r.headers["content-type"] in image_formats:
         return True
@@ -922,6 +946,41 @@ def getMorePosts():  # slower than default load
     return '[]'  # no args
 
 
+@app.route('/loadmore-query')
+def getMorePostsQuery():
+    if request.args:
+        ctr = int(request.args.get("ctr"))
+        query = str(request.args.get("q"))
+        psts = [x for x in Post.query.all() if query in x.title.lower()]
+        indx = len(psts) - ctr - 1
+        if len(psts) < 1 or indx < 0 or indx > len(psts): return '[]'
+        pst = psts[indx]
+        if pst == None: return '[]'
+        return make_response(
+            jsonify([
+                pst.title,
+                User.query.filter_by(id=pst.author_id).first().username,
+                days_between(pst.created_on), pst.content[:100] +
+                (pst.content[100:] and '...'), pst.comments, pst.id
+            ], 200))
+    return '[]'
+
+@app.route('/report-user/<id>')
+def repU(id: int):
+  try:
+    return "[{0}]".format( str(reportUser(User.query.filter_by(id=id).first())) )
+  except:
+    return '[]'
+  return
+
+@app.route('/report-post/<id>')
+def repP(id: int):
+  try:
+    return "[{0}]".format( str(reportPost(Post.query.filter_by(id=id).first())) )
+  except:
+    return '[]'
+  return
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
@@ -945,6 +1004,11 @@ def unauth(e):
 def bad_request(e):
     flash(e)
     return redirect(url_for('index'))
+
+
+@app.errorhandler(405)
+def method_not_allowed(e):
+    return render_template('404.html'), 405
 
 
 @app.errorhandler(408)
@@ -981,7 +1045,7 @@ def terms():
 
 @app.route('/ver')
 def version():
-    return '2'
+    return '3'
 
 
 sThread()

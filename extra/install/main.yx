@@ -1,4 +1,4 @@
-ver = "2";
+ver = "3";
 sv = exec(~returne=int(requests.get('https://forum.eniac1.repl.co/ver').content)~);
 sv = to_str(sv);
 
